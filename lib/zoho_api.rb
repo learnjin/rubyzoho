@@ -165,6 +165,16 @@ module ZohoApi
       to_hash(x, module_name)
     end
 
+    def get_records_from_custom_view(module_name, custom_view_name, from_index, to_index)
+      r = self.class.get(create_url("#{module_name}", 'getCVRecords'),
+         :query => { :newFormat => 1, :authtoken => @auth_token, :scope => 'crmapi',
+                     :cvName => custom_view_name, :fromIndex => from_index, :toIndex => to_index})
+      raise(RuntimeError, 'Bad query', "#{module_name} #{id}") unless r.body.index('<error>').nil?
+      check_for_errors(r)
+      x = REXML::Document.new(r.body).elements.to_a("/response/result/#{module_name}/row")
+      to_hash(x, module_name)
+    end
+
     def method_name?(n)
       return /[@$"]/ !~ n.inspect
     end

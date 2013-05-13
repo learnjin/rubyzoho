@@ -186,6 +186,10 @@ module RubyZoho
       RubyZoho.configuration.api.delete_record(self.module_name, id)
     end
 
+    def self.get_from_custom_view(cv_name, to_index=1, from_index=200)
+      RubyZoho.configuration.api.get_records_from_custom_view(self.module_name, cv_name, to_index, from_index)
+    end
+
     def primary_key
       RubyZoho.configuration.api.primary_key(self.class.module_name)
     end
